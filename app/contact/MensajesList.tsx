@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { fetchMessages } from '../services/message.service';
 
 // Define la estructura de un mensaje para TypeScript
 interface Mensaje {
@@ -11,20 +12,20 @@ interface Mensaje {
   created_at: string;
 }
 
-// Lógica para obtener la URL base de la API de forma segura
-const getApiBaseUrl = () => {
-    const fullUrl = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_URL)
-        ? process.env.NEXT_PUBLIC_API_URL
-        : 'http://localhost:8000/api/mensajes';
+// // Lógica para obtener la URL base de la API de forma segura
+// const getApiBaseUrl = () => {
+//     const fullUrl = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_URL)
+//         ? process.env.NEXT_PUBLIC_API_URL
+//         : 'http://localhost:8000/api/mensajes';
     
-    // Si la URL contiene /mensajes, asumimos que es la URL completa para el POST y recortamos la ruta
-    // para obtener la base /api para luego concatenar el GET endpoint.
-    return fullUrl.endsWith('/mensajes') 
-        ? fullUrl.substring(0, fullUrl.lastIndexOf('/')) 
-        : fullUrl;
-};
+//     // Si la URL contiene /mensajes, asumimos que es la URL completa para el POST y recortamos la ruta
+//     // para obtener la base /api para luego concatenar el GET endpoint.
+//     return fullUrl.endsWith('/mensajes') 
+//         ? fullUrl.substring(0, fullUrl.lastIndexOf('/')) 
+//         : fullUrl;
+// };
 
-const API_BASE_URL = getApiBaseUrl();
+// const API_BASE_URL = getApiBaseUrl();
 
 
 interface MensajesListProps {
@@ -40,30 +41,16 @@ const MensajesList: React.FC<MensajesListProps> = ({ onBackToForm }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Función para obtener los datos de la API (GET a /api/mensajes)
     const fetchMensajes = async () => {
-      // Usamos el punto final /mensajes completo
-      const endpoint = `${API_BASE_URL}/mensajes`;
-
       try {
-        const response = await fetch(endpoint, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error al cargar los mensajes. Código: ${response.status}`);
-        }
-
-        const result = await response.json();
-        // Asumiendo que la respuesta es { data: [...] }
-        setMensajes(result.data || []);
-      } catch (err) {
-        // En caso de error de red o de la API
-        console.error("Fetch Error:", err);
-        setError('No se pudieron cargar los mensajes. Asegúrate de que el backend de Laravel esté activo en ' + endpoint);
+        const result: any = await fetchMessages();
+        console.log('fetchMessages result:', result);
+        // Normaliza respuesta: prefer `data`, luego `results`, si es array úsalo, si no fallback a []
+        const datos: any[] = result?.data ?? result?.results ?? (Array.isArray(result) ? result : []);
+        setMensajes(datos);
+      } catch (err: any) {
+        console.error('Fetch Error:', err);
+        setError(err?.message || 'No se pudieron cargar los mensajes. Asegúrate de que el backend de Laravel esté activo');
       } finally {
         setLoading(false);
       }
