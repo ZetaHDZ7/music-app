@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import Layout from "../components/Layout"
 
 export default function Page() {
   const [name, setName] = useState("")
@@ -27,7 +26,7 @@ export default function Page() {
     setSending(true)
 
     try {
-
+      // Simulación de envío; reemplaza por fetch a tu API si procede
       await new Promise((res) => setTimeout(res, 900))
       setName("")
       setEmail("")
@@ -41,6 +40,7 @@ export default function Page() {
     }
   }
 
+  
   useEffect(() => {
     if (notification?.type === 'error') {
       const el = document.getElementById('name') as HTMLInputElement | null
@@ -49,9 +49,8 @@ export default function Page() {
   }, [notification])
 
   return (
-    <Layout>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-        <div className="bg-gray-800 p-6 rounded-2xl shadow-lg w-full max-w-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="bg-gray-800 p-6 rounded-2xl shadow-lg w-full max-w-lg">
         <h1 className="text-2xl font-bold mb-4 text-white">Contacto</h1>
 
         {/* Región de notificación accesible */}
@@ -121,8 +120,7 @@ export default function Page() {
             {sending ? 'Enviando...' : 'Enviar'}
           </button>
         </form>
+         </div>
           </div>
-        </div>
-      </Layout>
-    )
-  }
+  )
+}
