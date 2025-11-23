@@ -6,26 +6,26 @@ import MusicCard from './components/MusicCard';
 import Image from 'next/image';
 
 const Home: React.FC = () => {
-  // Datos de ejemplo para las tarjetas de música
+
   const featuredReleases = [
     {
       title: 'Melodías del Amanecer',
       artist: 'Aura Sonora',
-      imageUrl: '/images/album1.jpg', // Asegúrate de tener estas imágenes en tu carpeta public/images
+      imageUrl: '/images/album3.jpg.webp',
       releaseDate: '2024-06-15',
       link: '#',
     },
     {
       title: 'Ritmos Nocturnos',
       artist: 'DJ Beatmaster',
-      imageUrl: '/images/album2.jpg',
+      imageUrl: '/images/Oxelotl-4.jpg',
       releaseDate: '2024-07-01',
       link: '#',
     },
     {
       title: 'Armonía Eterna',
       artist: 'Luna Creciente',
-      imageUrl: '/images/album3.jpg',
+      imageUrl: '/images/Salsalvador.jpg',
       releaseDate: '2024-07-10',
       link: '#',
     },
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section className="relative h-96 md:h-[500px] lg:h-[600px] w-full flex items-center justify-center text-center mb-16 rounded-xl overflow-hidden shadow-2xl">
         <Image
-          src="/images/hero-bg.jpg" // Asegúrate de tener esta imagen
+          src="/images/hero-bg.jpg"
           alt="Concierto de música en vivo"
           layout="fill"
           objectFit="cover"
